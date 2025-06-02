@@ -96,7 +96,60 @@ const SearchButton = styled.div`
 `;
 
 const Home = () => {
-  return <div>Home</div>;
+
+const [location, setLocation] = useState("");
+const [CheckInDate, setCheckInDate] = useState("");
+const [CheckOutDate, setCheckOutDate] = useState("");
+const navigate = useNavigate();
+
+const handleSearchClick =()  =>{
+  navigate("/properties",{
+    state:{ location, CheckInDate, CheckOutDate},
+  });
+};
+
+  return <Container>
+    <SearchContainer>
+    <LocationWrapper>
+      <Title>Location</Title>
+      <Desc placeholder="Where are you going" 
+      type="text" 
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      />
+    </LocationWrapper>
+
+  <CheckInWrapper>
+      <Title>Check in Date</Title>
+      <Desc placeholder="Start date" 
+      type="date" 
+      value={CheckInDate}
+      onChange={(e) => setCheckInDate(e.target.value)}
+      
+      />
+    </CheckInWrapper>
+
+    <CheckOutWrapper>
+      <Title>Check out Date</Title>
+      <Desc placeholder="End date" 
+      type="date" 
+      value={CheckOutDate}
+      onChange={(e) => setCheckOutDate(e.target.value)}
+
+
+      
+      />
+    </CheckOutWrapper>
+
+    <SearchWrapper>
+      <SearchButton onClick={handleSearchClick}>
+        <SearchRounded sx={{color:"inherit ", fontSize:"30px"}}/>
+      </SearchButton>
+    </SearchWrapper>
+
+
+    </SearchContainer>
+  </Container>;
 };
 
 export default Home;

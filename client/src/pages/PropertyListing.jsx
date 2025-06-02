@@ -178,7 +178,13 @@ const PropertyListing = () => {
     },
   ]);
 
-  return <div>PropertyListing</div>;
+  return <Container>
+    <Property>
+      <CardWrapper>
+        
+      </CardWrapper>
+    </Property>
+  </Container>
 };
 
 export default PropertyListing;

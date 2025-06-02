@@ -138,6 +138,32 @@ const Navbar = () => {
           <Logo src={LogoImg} alt="logo" />
         </NavLogo>
 
+        {isOpen && (
+          <MobileMenu isOpen={isOpen} >
+          <Navlink to="/" onClick={() => setIsOpen(!isOpen)}>
+          Home
+          </Navlink>
+          <Navlink to="/properties" onClick={() => setIsOpen(!isOpen)}>
+            Places to stay  
+          </Navlink>
+          <Navlink to="/contact" onClick={() => setIsOpen(!isOpen)}>
+            Contact
+          </Navlink>
+          <Navlink to="/blogs" onClick={() => setIsOpen(!isOpen)}>
+            Blogs
+          </Navlink>
+
+          <div>
+          <Button type="secondary" text="Sign In" small />
+          <Button type="secondary" text="Sign In" small />
+
+ 
+          </div>
+
+
+          </MobileMenu>
+        )}
+
         <NavItems>
           <Navlink to="/">Home</Navlink>
           <Navlink to="/properties">Places to stay</Navlink>

@@ -57,8 +57,23 @@ const TextButton = styled.div`
   font-weight: 600;
 `;
 
-const Authentication = () => {
-  return <div>Authentication</div>;
+const Authentication = ({ openAuth, setOpenAuth}) => {
+
+return <Modal open={openAuth} onClose={()=>setOpenAuth(false)}>
+  <Container>
+    <CloseButton onClick={() => setOpenAuth(false)}>
+      <Close style={{ color: "white" }} />
+    </CloseButton>
+    <SignIn />
+    <Text>
+      Don't have an account?{" "}
+      <TextButton onClick={() => setOpenAuth(false)}>
+        Sign Up
+      </TextButton>
+    </Text>
+    <Signup />
+  </Container>
+</Modal>;
 };
 
 export default Authentication;

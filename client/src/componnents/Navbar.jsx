@@ -124,7 +124,7 @@ const MobileMenu = styled.ul`
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
 `;
 
-const Navbar = () => {
+const Navbar = ({setOpenAuth, openAuth}) => {
   const [isOpen, setIsOpen] = useState(false);
   
   return (
@@ -161,8 +161,10 @@ const Navbar = () => {
             
           }}
           >
-          <Button type="seconadry" text="SignUp" small />
-          <Button  text="SignIn" small />
+          <Button type="seconadry" text="SignUp"
+           small onClick={()=> setOpenAuth(!openAuth)} />
+          <Button  text="SignIn" small
+          onClick={() => setOpenAuth(! openAuth)} />
 
  
           </div>

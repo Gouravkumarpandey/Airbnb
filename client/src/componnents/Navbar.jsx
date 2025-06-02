@@ -2,15 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import Button from "./Button";
-import {
-  FavoriteBorder,
-  MenuRounded,
-  SearchRounded,
-} from "@mui/icons-material";
-import { Avatar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { MenuRounded } from "@mui/icons-material";
 import LogoImg from "../utils/Images/Logo.svg";
-import { logout } from "../redux/reducers/userSlice";
 
 const Nav = styled.div`
   padding: 10px;
@@ -124,54 +117,27 @@ const MobileMenu = styled.ul`
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
 `;
 
-const Navbar = ({setOpenAuth, openAuth}) => {
+const Navbar = ({ setOpenAuth, openAuth }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
+  const toggleMobileMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleAuthClick = () => {
+    setOpenAuth(!openAuth);
+  };
+
   return (
     <Nav>
       <NavbarContainer>
-        <MobileIcon onClick={() => setIsOpen(!isOpen)}>
-          <MenuRounded style={{color: "inherit"}} />
+        <MobileIcon onClick={toggleMobileMenu}>
+          <MenuRounded style={{ color: "inherit" }} />
         </MobileIcon>
-        
+
         <NavLogo>
           <Logo src={LogoImg} alt="logo" />
         </NavLogo>
-
-        {isOpen && (
-          <MobileMenu isOpen={isOpen} >
-          <Navlink to="/" onClick={() => setIsOpen(!isOpen)}>
-          Home
-          </Navlink>
-          <Navlink to="/properties" onClick={() => setIsOpen(!isOpen)}>
-            Places to stay  
-          </Navlink>
-          <Navlink to="/contact" onClick={() => setIsOpen(!isOpen)}>
-            Contact
-          </Navlink>
-          <Navlink to="/blogs" onClick={() => setIsOpen(!isOpen)}>
-            Blogs
-          </Navlink>
-
-          <div 
-          style={{
-            flex:1,
-            display: "flex",
-            gap:"12px",
-            
-          }}
-          >
-          <Button type="seconadry" text="SignUp"
-           small onClick={()=> setOpenAuth(!openAuth)} />
-          <Button  text="SignIn" small
-          onClick={() => setOpenAuth(! openAuth)} />
-
- 
-          </div>
-
-
-          </MobileMenu>
-        )}
 
         <NavItems>
           <Navlink to="/">Home</Navlink>
@@ -181,15 +147,49 @@ const Navbar = ({setOpenAuth, openAuth}) => {
         </NavItems>
 
         <ButtonContainer>
-          <Button type="secondary" text="Sign In" small />
+          <Button 
+            type="secondary" 
+            text="Sign Up" 
+            small 
+            onClick={handleAuthClick}
+          />
+          <Button 
+            text="Sign In" 
+            small 
+            onClick={handleAuthClick}
+          />
         </ButtonContainer>
 
         <MobileMenu isOpen={isOpen}>
-          <Navlink to="/">Home</Navlink>
-          <Navlink to="/properties">Places to stay</Navlink>
-          <Navlink to="/contact">Contact</Navlink>
-          <Navlink to="/blogs">Blogs</Navlink>
-          <Button type="secondary" text="Sign In" small />
+          <Navlink to="/" onClick={toggleMobileMenu}>
+            Home
+          </Navlink>
+          <Navlink to="/properties" onClick={toggleMobileMenu}>
+            Places to stay
+          </Navlink>
+          <Navlink to="/contact" onClick={toggleMobileMenu}>
+            Contact
+          </Navlink>
+          <Navlink to="/blogs" onClick={toggleMobileMenu}>
+            Blogs
+          </Navlink>
+          <div style={{
+            display: "flex",
+            gap: "12px",
+            width: "100%"
+          }}>
+            <Button
+              type="secondary"
+              text="Sign Up"
+              small
+              onClick={handleAuthClick}
+            />
+            <Button
+              text="Sign In"
+              small
+              onClick={handleAuthClick}
+            />
+          </div>
         </MobileMenu>
       </NavbarContainer>
     </Nav>

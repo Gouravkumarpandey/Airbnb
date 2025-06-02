@@ -14,12 +14,12 @@ const Container = styled.div`
     url(${Background});
   background-size: cover;
   background-repeat: no-repeat;
-  display: flex;
   flex-direction: column;
   padding: 40px;
   gap: 16px;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 const CloseButton = styled.div`
@@ -50,6 +50,7 @@ const Text = styled.p`
     font-size: 14px;
   }
 `;
+
 const TextButton = styled.div`
   color: ${({ theme }) => theme.secondary};
   cursor: pointer;
@@ -57,23 +58,36 @@ const TextButton = styled.div`
   font-weight: 600;
 `;
 
-const Authentication = ({ openAuth, setOpenAuth}) => {
+const Authentication = ({ openAuth, setOpenAuth }) => {
+  const [login, setLogin] = useState(true);
 
-return <Modal open={openAuth} onClose={()=>setOpenAuth(false)}>
-  <Container>
-    <CloseButton onClick={() => setOpenAuth(false)}>
-      <Close style={{ color: "white" }} />
-    </CloseButton>
-    <SignIn />
-    <Text>
-      Don't have an account?{" "}
-      <TextButton onClick={() => setOpenAuth(false)}>
-        Sign Up
-      </TextButton>
-    </Text>
-    <Signup />
-  </Container>
-</Modal>;
+  return (
+    <Modal open={openAuth} onClose={() => setOpenAuth(false)}>
+      <Container>
+        <CloseButton onClick={() => setOpenAuth(false)}>
+          <Close style={{ color: "white" }} />
+        </CloseButton>
+
+        {login ? (
+          <>
+            <SignIn setOpenAuth={setOpenAuth} />
+            <Text>
+              Don't have an account?
+              <TextButton onClick={() => setLogin(false)}>SignUp</TextButton>
+            </Text>
+          </>
+        ) : (
+          <>
+            <Signup setOpenAuth={setOpenAuth} />
+            <Text>
+              Already have an account?
+              <TextButton onClick={() => setLogin(true)}>SignIn</TextButton>
+            </Text>
+          </>
+        )}
+      </Container>
+    </Modal>
+  );
 };
 
 export default Authentication;

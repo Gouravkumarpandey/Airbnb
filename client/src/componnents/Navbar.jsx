@@ -95,7 +95,7 @@ const ButtonContainer = styled.div`
 `;
 
 const MobileIcon = styled.div`
-  color: ${({ theme }) => theme.text_primary};
+  color: ${({ theme }) => theme.white};
   display: none;
   cursor: pointer;
   @media screen and (max-width: 768px) {
@@ -131,7 +131,7 @@ const Navbar = () => {
     <Nav>
       <NavbarContainer>
         <MobileIcon onClick={() => setIsOpen(!isOpen)}>
-          <MenuRounded />
+          <MenuRounded style={{color: "inherit"}} />
         </MobileIcon>
         
         <NavLogo>

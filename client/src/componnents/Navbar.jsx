@@ -153,9 +153,16 @@ const Navbar = () => {
             Blogs
           </Navlink>
 
-          <div>
-          <Button type="secondary" text="Sign In" small />
-          <Button type="secondary" text="Sign In" small />
+          <div 
+          style={{
+            flex:1,
+            display: "flex",
+            gap:"12px",
+            
+          }}
+          >
+          <Button type="seconadry" text="SignUp" small />
+          <Button  text="SignIn" small />
 
  
           </div>

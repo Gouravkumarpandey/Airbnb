@@ -181,7 +181,10 @@ const PropertyListing = () => {
   return <Container>
     <Property>
       <CardWrapper>
-        
+        {properties.map((Property) => (
+          <PropertyCard property = { Property} />
+
+        ))}
       </CardWrapper>
     </Property>
   </Container>

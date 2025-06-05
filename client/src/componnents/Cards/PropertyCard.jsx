@@ -139,8 +139,38 @@ const Percent = styled.div`
   color: green;
 `;
 
-const PropertyCard = () => {
-  return <div>Property Card</div>;
+const PropertyCard = ({property}) => {
+  const navigate = useNavigate();
+
+  return (
+    <Card>
+      <Top>
+        <Image src={property?.img || "250x250"} />
+        <Menu>
+          <MenuItem>
+            <FavoriteBorder sx={{ fontSize: "20px" }} />
+          </MenuItem>
+        </Menu>
+        <Rate>
+          <Rating 
+            value={property?.rating || 2} 
+            readOnly
+            size="small"
+          />
+        </Rate>
+      </Top>
+      <Details onClick={() => navigate(`/properties/${property?._id}`)}>
+        <Title>Beautiful Beach House</Title>
+        <Desc>A stunning house located near ...</Desc>
+        <Location>Los Angeles</Location>
+        <Price>
+          $250
+          <Strike>$300</Strike>
+          <Percent>17% off</Percent>
+        </Price>
+      </Details>
+    </Card>
+  );
 };
 
 export default PropertyCard;

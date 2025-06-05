@@ -121,7 +121,7 @@ const PropertyListing = () => {
       img: "https://via.placeholder.com/250",
       title: "Beautiful Beach House",
       desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
+      rating: "2.5",
       price: {
         org: 250,
         mrp: 300,

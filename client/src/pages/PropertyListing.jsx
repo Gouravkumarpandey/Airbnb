@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropertyCard from "../componnents/Cards/PropertyCard";
-import { getAllCourses, getAllProperty } from "../api";
+import { getAllProperties } from "../api";
 import { CircularProgress } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
@@ -21,6 +21,7 @@ const Container = styled.div`
   margin: 0 20px;
   border-radius: 12px 12px 0 0;
 `;
+
 const Property = styled.div`
   padding: 12px;
   overflow: hidden;
@@ -31,6 +32,7 @@ const Property = styled.div`
     height: 100%;
   }
 `;
+
 const CardWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -42,38 +44,45 @@ const CardWrapper = styled.div`
 `;
 
 const PropertyListing = () => {
-const [loading, setLoading] = useState(false);
-
-
+  const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState([]);
+  const location = useLocation();
+  const { location: loc, checkInDate, checkOutDate } = location.state || {};
+  const filter = `location=${loc}`;
 
-  const getproperties = async () => {
-    setLoading(true);
-    await getAllProperty().then((res) => {
+  const getProperties = async () => {
+    try {
+      setLoading(true);
+      const res = await getAllProperties();
       setProperties(res.data);
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   useEffect(() => {
-    getproperties();
-  })
+    getProperties();
+  }, []);
 
   return (
-  <Container>
-    {loading ?(
-      <CircularProgress/>
-    ):(
-    <Property>
-      <CardWrapper>
-        {properties.map((Property) => (
-          <PropertyCard property = { Property} />
-
-        ))}
-      </CardWrapper>
-    </Property>
-    )}
-  </Container>
+    <Container>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Property>
+          <CardWrapper>
+            {properties.map((property) => (
+              <PropertyCard 
+                key={property._id} 
+                property={property} 
+              />
+            ))}
+          </CardWrapper>
+        </Property>
+      )}
+    </Container>
   );
 };
 

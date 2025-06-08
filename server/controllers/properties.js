@@ -1,5 +1,4 @@
-import properties from "../models/properties";
-
+import properties from "../models/properties.js"; // Add .js extension
 
 export const AddProperties = async (req, res, next) =>{
 try{
@@ -13,9 +12,7 @@ const Property = new properties({
     price,
 });
 const createdProperty = await Property.save();
-return res
-
-
+return res.status(200).json(createdProperty); // Add proper response
 
 } catch (err) {
         next(err);
@@ -41,7 +38,7 @@ const Property = await properties.find(filter,{
     location:1,
     price:1,
 });
-return res.status(200).json(properties);
+return res.status(200).json(Property); // Fix variable name
 
 } catch (err) {
         next(err);

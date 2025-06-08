@@ -1,14 +1,14 @@
 import express from 'express';
-import{ 
+import { 
     AddToFavorites,
     GetUserFavorites,
     RemoveFromFavorites,
     SignUp,
     SignIn,
     BookProperty,
-    GetBookedproperty,
-} from"../controllers/user.js";
-import { verifyToken } from "../middleware/verifyToken.js";
+    GetBookedProperty, // Fixed capitalization
+} from "../controllers/user.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
@@ -18,6 +18,6 @@ router.post("/addToFavorites", [verifyToken], AddToFavorites);
 router.post("/getFavorites", [verifyToken], GetUserFavorites);
 router.post("/removeFavorites", [verifyToken], RemoveFromFavorites);
 router.post("/booking", [verifyToken], BookProperty);
-router.post("/getBooking", [verifyToken], GetBookedproperty);
+router.post("/getBooking", [verifyToken], GetBookedProperty); // Fixed capitalization
 
 export default router;

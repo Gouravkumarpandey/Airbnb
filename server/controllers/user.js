@@ -1,9 +1,9 @@
 import User from '../models/user.js';
-import Property from '../models/properties.js'; // Changed to capital for consistency
+import Property from '../models/properties.js';
 import { createError } from "../error.js";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"; // Fixed JWT import
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ export const SignUp = async (req, res, next) => {
         const user = new User({
             name,
             email,
-            password: hash, // Fixed variable name
+            password: hash,
         });
 
         const createdUser = await user.save();
@@ -31,6 +31,32 @@ export const SignUp = async (req, res, next) => {
         });
 
         return res.status(201).json({ token, user });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const SignIn = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        
+        const user = await User.findOne({ email });
+        if (!user) {
+            return next(createError(404, "User not found"));
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return next(createError(400, "Wrong password or email"));
+        }
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT, {
+            expiresIn: "9999 years",
+        });
+
+        const { password: userPassword, ...otherDetails } = user._doc;
+        return res.status(200).json({ token, user: otherDetails });
 
     } catch (err) {
         next(err);
@@ -69,14 +95,14 @@ export const GetBookedProperty = async (req, res, next) => {
         const userId = req.user.id;
         const user = await User.findById(userId).populate({
             path: "bookings",
-            model: "Property", // Fixed typo in model name
+            model: "Property",
         });
         
         if (!user) {
             return next(createError(404, "User not found"));
         }
 
-        return res.status(200).json(user.bookings); // Changed to bookings instead of purchased
+        return res.status(200).json(user.bookings);
 
     } catch (err) {
         next(err);
@@ -87,7 +113,7 @@ export const AddToFavorites = async (req, res, next) => {
     try {
         const { propertyId } = req.body;
         const userId = req.user.id;
-        const user = await User.findById(userId); // Fixed variable reference
+        const user = await User.findById(userId);
 
         if (!user) {
             return next(createError(404, "User not found"));
@@ -98,7 +124,7 @@ export const AddToFavorites = async (req, res, next) => {
             await user.save();
         }
 
-        return res.status(200).json({ message: "Property added to favorites" }); // Added return statement
+        return res.status(200).json({ message: "Property added to favorites" });
 
     } catch (err) {
         next(err);
@@ -107,9 +133,9 @@ export const AddToFavorites = async (req, res, next) => {
 
 export const RemoveFromFavorites = async (req, res, next) => {
     try {
-        const { propertyId } = req.body; // Fixed variable name
+        const { propertyId } = req.body;
         const userId = req.user.id;
-        const user = await User.findById(userId); // Fixed to use userId instead of userJWT.id
+        const user = await User.findById(userId);
         
         user.favorites = user.favorites.filter((fav) => !fav.equals(propertyId));
         await user.save();
@@ -121,10 +147,10 @@ export const RemoveFromFavorites = async (req, res, next) => {
     }
 };
 
-export const GetUserFavorites = async (req, res, next) => { // Fixed spelling
+export const GetUserFavorites = async (req, res, next) => {
     try {
         const userId = req.user.id;
-        const user = await User.findById(userId).populate("favorites").exec(); // Added missing parentheses
+        const user = await User.findById(userId).populate("favorites").exec();
 
         if (!user) {
             return next(createError(404, "User not found"));

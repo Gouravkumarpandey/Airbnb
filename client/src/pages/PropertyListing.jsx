@@ -42,143 +42,28 @@ const CardWrapper = styled.div`
 `;
 
 const PropertyListing = () => {
-  const [properties, setProperties] = useState([
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      location: "Los, Angles",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "2.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-    {
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    },
-  ]);
+const [loading, setLoading] = useState(false);
 
-  return <Container>
+
+  const [properties, setProperties] = useState([]);
+
+  const getproperties = async () => {
+    setLoading(true);
+    await getAllProperty().then((res) => {
+      setProperties(res.data);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    getproperties();
+  })
+
+  return (
+  <Container>
+    {loading ?(
+      <CircularProgress/>
+    ):(
     <Property>
       <CardWrapper>
         {properties.map((Property) => (
@@ -187,7 +72,9 @@ const PropertyListing = () => {
         ))}
       </CardWrapper>
     </Property>
+    )}
   </Container>
+  );
 };
 
 export default PropertyListing;

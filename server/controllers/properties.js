@@ -49,7 +49,11 @@ return res.status(200).json(properties);
 };
 
 export const GetPropertyDetails = async (req, res, next) =>{
-try{} catch (err) {
+try{
+    const { id } = req.params;
+    const Property = await properties.findById(id);
+    return res.status(200).json(Property);        
+} catch (err) {
         next(err);
     }
 };

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/lab";
 import { CircularProgress, Rating, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { bookProperty } from "../api";
+import { getPropertyDetails, BookProperty } from "../api";
 import { openSnackbar } from "../redux/reducers/snackbarSlice";
 import Button from "../componnents/Button";
 
@@ -74,56 +74,136 @@ const BookingContainer = styled.div`
   gap: 16px;
 `;
 
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PropertyDetails = () => {
-  const property = {
-    
-      _id: "12345",
-      img: "https://via.placeholder.com/250",
-      title: "Beautiful Beach House",
-      desc: "A stunning house located near the beach with amazing sea views.",
-      rating: "1.5",
-      price: {
-        org: 250,
-        mrp: 300,
-        off: 17,
-      },
-    };
-     
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  return ( <Container>
-    <Image  src={property?.img}/>
-    <Right>
-      <Title>{property?.title}</Title>
-      <Desc>{property?.desc}</Desc>
-      <Price>
-        ${property?.price?.org}
-        <Span>${property?.price?.mrp}</Span>
-        <Percent>({property?.price?.off}% off)</Percent>  
-      </Price>
-      <RatingContainer>
-        <Rating value={property?.rating} readOnly/>
-        <span>({property?.rating})</span>
-      </RatingContainer>
-      <BookingContainer>
-       <DatePicker
-       lable="Start Date"
-        renderInput={(params) => <TextField {...params} />}
-       /> 
-        <DatePicker 
-        lable="End Date"
-        renderInput={(params) => <TextField {...params} />}
-        />
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-        <Button 
-        variant="contained"
-        color="secondary"
-        text="Book Now"
-        > </Button>
+  const getPropertyDetailsByID = async () => {
+    try {
+      setLoading(true);
+      const response = await getPropertyDetails(id);
+      setProperty(response.data);
+    } catch (error) {
+      dispatch(openSnackbar({ 
+        message: error.message || "Failed to fetch property details", 
+        severity: "error" 
+      }));
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleBooking = async () => {
+    if (!startDate || !endDate) {
+      dispatch(openSnackbar({ 
+        message: "Please select both start and end dates", 
+        severity: "warning" 
+      }));
+      return;
+    }
 
-      </BookingContainer>
-    </Right>
-  </Container>
+    try {
+      await BookProperty({
+        propertyId: id,
+        startDate,
+        endDate,
+      });
+      dispatch(openSnackbar({ 
+        message: "Property booked successfully!", 
+        severity: "success" 
+      }));
+      navigate("/bookings");
+    } catch (error) {
+      dispatch(openSnackbar({ 
+        message: error.message || "Booking failed", 
+        severity: "error" 
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getPropertyDetailsByID();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <LoadingWrapper>
+        <CircularProgress />
+      </LoadingWrapper>
+    );
+  }
+
+  if (!property) {
+    return (
+      <Container>
+        <Title>Property not found</Title>
+      </Container>
+    );
+  }
+
+  return (
+    <Container>
+      <Image src={property.imageUrl} alt={property.title} />
+      <Right>
+        <Title>{property.title}</Title>
+        <Desc>{property.description}</Desc>
+        <RatingContainer>
+          <Rating 
+            value={property.rating} 
+            readOnly 
+            precision={0.5}
+          />
+          <span>({property.reviews} reviews)</span>
+        </RatingContainer>
+        <Price>
+          ${property.price}
+          {property.discount > 0 && (
+            <>
+              <Span>${property.originalPrice}</Span>
+              <Percent>{property.discount}% OFF</Percent>
+            </>
+          )}
+        </Price>
+        <BookingContainer>
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={setStartDate}
+            renderInput={(params) => <TextField {...params} fullWidth />}
+            minDate={new Date()}
+          />
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={setEndDate}
+            renderInput={(params) => <TextField {...params} fullWidth />}
+            minDate={startDate || new Date()}
+          />
+          <Button 
+            onClick={handleBooking}
+            disabled={!startDate || !endDate}
+          >
+            Book Now
+          </Button>
+        </BookingContainer>
+      </Right>
+    </Container>
   );
 };
 

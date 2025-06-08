@@ -160,13 +160,13 @@ const PropertyCard = ({property}) => {
         </Rate>
       </Top>
       <Details onClick={() => navigate(`/properties/${property?._id}`)}>
-        <Title>Beautiful Beach House</Title>
-        <Desc>A stunning house located near ...</Desc>
-        <Location>Los Angeles</Location>
+        <Title>{property?.title}</Title>
+        <Desc>{property?.desc}</Desc>
+        <Location>{property?.location}</Location>
         <Price>
-          $250
-          <Strike>$300</Strike>
-          <Percent>17% off</Percent>
+          ${property?.price.org}
+          <Strike>${property?.price?.mrp}</Strike>
+          <Percent>${property?.price?.off}%off</Percent>
         </Price>
       </Details>
     </Card>

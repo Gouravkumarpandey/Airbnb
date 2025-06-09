@@ -39,7 +39,39 @@ const TextButton = styled.div`
 `;
 
 const SignIn = ({ setOpenAuth }) => {
-  return <Container>
+  const dispatch = useDispatch();
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateInputs = () => {
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return false;
+    }
+    return true;
+  };
+  const handelSignIn = async() =>{
+    setButtonLoading(true);
+    setButtonDisabled(true);
+
+    if(validateInputs){
+      await UserSignIn ({ email, password }).then((res) => {
+        dispatch(loginSuccess(res.data));
+        setOpenAuth(false);
+
+      })
+      . catch((err) =>{
+        alert({message: err.message});
+      }).finally(()=>{
+        setButtonLoading(false);
+      })
+    }
+  };
+
+  return(
+   <Container>
     <div>
       <Title>Welcome to Airbnb</Title>
       <span>Please login with your details here</span>
@@ -48,20 +80,27 @@ const SignIn = ({ setOpenAuth }) => {
       <TextInput
         label="Email"
         placeholder="Enter your email"
-        type="email"
-        name="email"
+        value={email}
+        handelChange={(e) => setEmail(e.target.value)}
+      
       />
       <TextInput
         label="Password"
         placeholder="Enter your password"
         password
+        value={password}
+        handelChange={(e) => setPassword(e.target.value)}
       />
-      <TextButton >
-        Forgot Password?
-      </TextButton>
-      <Button text="Sign In" />
+      <TextButton >Forgot Password?</TextButton>
+      <Button text="Sign In" 
+      isLoading={buttonLoading}
+      isDisabled={buttonDisabled}
+      onClick={handelSignIn}
+      
+      />
     </div>
-  </Container>;
+  </Container>
+  );
 };
 
 export default SignIn;

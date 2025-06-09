@@ -63,9 +63,10 @@ const SignIn = ({ setOpenAuth }) => {
 
       })
       . catch((err) =>{
-        alert({message: err.message});
+        alert(err.response.data.message);
       }).finally(()=>{
         setButtonLoading(false);
+        setButtonDisabled(false);
       })
     }
   };

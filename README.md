@@ -1,3 +1,6 @@
+<img>![Uploading image.png…]()
+
+
 # 🏡 Airbnb Clone
 
 A modern full-stack **Airbnb-style** web application for listing and booking vacation properties, built using the powerful **MERN Stack** (MongoDB, Express.js, React.js, Node.js). This platform allows users to browse, search, and book holiday rentals seamlessly.

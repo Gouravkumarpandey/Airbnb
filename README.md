@@ -50,27 +50,6 @@ A modern full-stack **Airbnb-style** web application for listing and booking vac
 
 ---
 
-## 📁 Project Structure
-
-├── client/
-│ ├── public/
-│ └── src/
-│ ├── components/
-│ ├── pages/
-│ ├── redux/
-│ ├── services/
-│ └── utils/
-└── server/
-├── config/
-├── controllers/
-├── middleware/
-├── models/
-├── routes/
-└── utils/
-
-
----
-
 ## 🚀 Getting Started
 
 ### ✅ Prerequisites
@@ -160,17 +139,6 @@ Open a Pull Request
 📝 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-🔗 Links
-Live Demo: Coming Soon
-
-Documentation: Coming Soon
-
-
-📧 Contact
-Your Name – @yourtwitter – email@example.com
-Project Link: https://github.com/yourusername/airbnb-clone
-
-⭐ If you like this project, please consider giving it a star on GitHub!
 
 
 

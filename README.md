@@ -1,4 +1,5 @@
-<img>![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/2ac4329c-f25d-404d-8cfd-827dd9b02f3b)
+
 
 
 # 🏡 Airbnb Clone
